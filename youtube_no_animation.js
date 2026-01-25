@@ -34,11 +34,7 @@ function hookButtons() {
   likeSvgContainer.prepend(userLikeSvg)
   likeButton.addEventListener(
     'click',
-    (e) => {
-      if (!e.isTrusted) {
-        return
-      }
-      likeButton.click()
+    () => {
       isLiked = !isLiked
       userLikeSvg.innerHTML = isLiked ? LIKE_ACTIVE_SVG : LIKE_INACTIVE_SVG
     },
