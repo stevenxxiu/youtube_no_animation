@@ -14,10 +14,6 @@ const LIKE_ACTIVE_SVG = `{LIKE_ACTIVE_SVG}`
 const LIKE_INACTIVE_SVG = `{LIKE_INACTIVE_SVG}`
 
 function hookButtons() {
-  if (document.getElementById('userLike')) {
-    return
-  }
-
   const topRow = document.getElementById('top-row')
   const likeSvg = topRow.querySelector('like-button-view-model svg')
   let isLiked = likeSvg.querySelectorAll(':scope > g > g[style="display: block;"]').length == 2
@@ -25,7 +21,6 @@ function hookButtons() {
   const parser = new DOMParser()
   const svgSource = isLiked ? LIKE_ACTIVE_SVG : LIKE_INACTIVE_SVG
   const userLikeSvg = parser.parseFromString(svgSource, 'text/html').body.firstElementChild
-  userLikeSvg.id = 'userLike'
 
   const likeButton = topRow.querySelector('like-button-view-model button')
   const likeSvgContainer = topRow.querySelector('like-button-view-model button lottie-component')
