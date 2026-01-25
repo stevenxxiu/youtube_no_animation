@@ -22,13 +22,11 @@ function hookButtons() {
   const likeSvg = topRow.querySelector('like-button-view-model svg')
   let isLiked = likeSvg.querySelectorAll(':scope > g > g[style="display: block;"]').length == 2
 
-  const userLikeSvg = document.createElementNS(SVG_NS, 'svg')
+  const parser = new DOMParser()
+  const svgSource = isLiked ? LIKE_ACTIVE_SVG : LIKE_INACTIVE_SVG
+  const userLikeSvg = parser.parseFromString(svgSource, 'text/html').body.firstElementChild
   userLikeSvg.id = 'userLike'
-  userLikeSvg.innerHTML = isLiked ? LIKE_ACTIVE_SVG : LIKE_INACTIVE_SVG
-  userLikeSvg.setAttribute('width', '48')
-  userLikeSvg.setAttribute('height', '48')
-  userLikeSvg.setAttribute('viewBox', '0 0 48 48')
-  userLikeSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet')
+
   const likeButton = topRow.querySelector('like-button-view-model button')
   const likeSvgContainer = topRow.querySelector('like-button-view-model button lottie-component')
   likeSvgContainer.prepend(userLikeSvg)
