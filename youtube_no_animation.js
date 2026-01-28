@@ -16,7 +16,15 @@ const LIKE_INACTIVE_SVG = `{LIKE_INACTIVE_SVG}`
 
 function hookButtons(isDesktop) {
   const buttonsContainer = document.querySelector('#top-row, segmented-like-dislike-button-view-model')
+  const likeSvgContainer = buttonsContainer.querySelector('like-button-view-model button lottie-component')
+  if (!likeSvgContainer) {
+    return false
+  }
+
   const likeSvg = buttonsContainer.querySelector('like-button-view-model svg')
+  if (!likeSvg) {
+    return false
+  }
   likeSvg.style.display = 'none'
   let isLiked = likeSvg.querySelectorAll(':scope > g > g[style="display: block;"]').length == 2
 
@@ -30,25 +38,27 @@ function hookButtons(isDesktop) {
   }
 
   const likeButton = buttonsContainer.querySelector('like-button-view-model button')
-  const likeSvgContainer = buttonsContainer.querySelector('like-button-view-model button lottie-component')
   likeSvgContainer.prepend(userLikeSvg)
-  likeButton.addEventListener(
-    'click',
-    () => {
-      isLiked = !isLiked
-      userLikeSvg.innerHTML = isLiked ? LIKE_ACTIVE_SVG : LIKE_INACTIVE_SVG
-    },
-    false,
-  )
+  likeButton.addEventListener('click', () => {
+    isLiked = !isLiked
+    userLikeSvg.innerHTML = isLiked ? LIKE_ACTIVE_SVG : LIKE_INACTIVE_SVG
+  })
+  return true
 }
 
 function main() {
+  let isHooked = false
   const observer = new MutationObserver(() => {
+    if (isHooked) {
+      return
+    }
     const desktopSvg = document.querySelector('#top-row dislike-button-view-model svg')
     const mobileSvg = document.querySelector('.slim-video-action-bar-actions dislike-button-view-model svg')
     if (desktopSvg || mobileSvg) {
-      hookButtons(!!desktopSvg)
-      observer.disconnect()
+      isHooked = hookButtons(!!desktopSvg)
+      if (isHooked) {
+        observer.disconnect()
+      }
     }
   })
   observer.observe(document.body, {
