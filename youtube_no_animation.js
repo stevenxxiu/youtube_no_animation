@@ -26,8 +26,10 @@ function hookButtons(isDesktop) {
     return false
   }
   likeSvg.style.display = 'none'
-  let isLiked =
-    likeSvg.querySelectorAll(':scope > g > g[style="display: block;"] > g[style="display: block;"]').length == 3
+  const likeLen = likeSvg.querySelectorAll(
+    ':scope > g > g[style="display: block;"] > g[style="display: block;"]',
+  ).length
+  let isLiked = isDesktop ? likeLen == 3 : likeLen == 2
 
   const parser = new DOMParser()
   const svgSource = isLiked ? LIKE_ACTIVE_SVG : LIKE_INACTIVE_SVG
